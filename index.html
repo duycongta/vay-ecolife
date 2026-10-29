@@ -49,6 +49,8 @@ tr.chg td{border-top:2px solid var(--acc)}
 .note{font-size:12px;color:var(--mute);margin-top:8px}
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);width:max-content;max-width:min(92vw,460px);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:8px;font-size:14px;line-height:1.45;box-shadow:0 6px 20px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .8s ease,transform .8s ease;z-index:50}
 #toast.on{opacity:1;transform:translate(-50%,0);transition:opacity .25s ease,transform .25s ease}
+#inapp{display:block}
+#inapp[hidden]{display:none}
 .swipe{display:none;font-size:12px;color:var(--mute);margin:-4px 0 8px}
 @media (max-width:640px){
  .swipe{display:block}
@@ -120,7 +122,7 @@ tr.chg td{border-top:2px solid var(--acc)}
 <div class="note">Dòng tô vàng là kỳ dự kiến thanh lý. Đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh mỗi tháng = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả trong thời gian hỗ trợ (theo Thông báo số 36/2026/CSBH ngày 20/10/2026), tính trên lãi suất vay tối đa 11%/năm; phần lãi vượt 11% (nếu có) và gốc do khách trả.</div>
 </section>
 </main>
-<div id="inapp" class="warn" hidden style="display:block">Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
+<div id="inapp" class="warn" hidden>Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên có thể không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
 <p class="note" style="text-align:center">Phiên bản v3 · 29/10/2026</p>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
@@ -178,13 +180,14 @@ function calc(){
 function toast(m,ms){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){t.classList.remove("on")},ms||4500)}
 var UA=navigator.userAgent||"",INAPP=/Zalo|FBAN|FBAV|FB_IAB|Instagram|Line\/|Messenger|Viber|MicroMessenger|; wv\)/i.test(UA)||(/iPhone|iPad|iPod/.test(UA)&&!/Safari\//.test(UA));
 var HELP="Bấm dấu ⋯ (hoặc biểu tượng chia sẻ) ở góc trên, chọn \"Mở bằng trình duyệt\" (Chrome/Safari) rồi xuất lại.";
-if(INAPP){var ia=$("inapp");document.querySelector("main").insertBefore(ia,document.querySelector("main .sub"));ia.hidden=false}
+var ac=document.querySelector(".actions");ac.parentNode.insertBefore($("inapp"),ac.nextSibling);
 $("cp").addEventListener("click",function(){var u=location.href,ok=function(){toast("Đã sao chép link. Hãy dán vào Chrome/Safari để mở.",4000)};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,function(){fb()})}else fb();function fb(){var t=document.createElement("textarea");t.value=u;document.body.appendChild(t);t.select();try{document.execCommand("copy");ok()}catch(e){toast(u,8000)}t.remove()}});
 function place(){var u=navigator.userAgent||"";return /iPhone|iPad|iPod/.test(u)?"ứng dụng Tệp (Files) trên điện thoại":/Android/.test(u)?"thư mục Tải xuống (Downloads) của điện thoại":"thư mục Tải xuống của máy"}
 function opt(id){var e=$(id);return e.options[e.selectedIndex].text}
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 function kv(rows,cls){return'<table class="kv"><tbody>'+rows.map(function(x){return"<tr><td>"+esc(x[0])+"</td><td>"+esc(x[1])+"</td></tr>"}).join("")+(cls||"")+"</tbody></table>"}
 function exportPdf(){
+  if(INAPP)$("inapp").hidden=false;
   if(!calc()){$("w").scrollIntoView({block:"center"});return}
   var L=last,u=$("u").value,inp=[
     ["Mã căn hộ",u===""?"Nhập tay":U[+u].c],
