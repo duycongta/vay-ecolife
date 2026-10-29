@@ -121,6 +121,7 @@ tr.chg td{border-top:2px solid var(--acc)}
 </section>
 </main>
 <div id="inapp" class="warn" hidden style="display:block">Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
+<p class="note" style="text-align:center">Phiên bản v3 · 29/10/2026</p>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 var PROMO={12:9.49,18:10.49,24:10.49},CAP=11;
@@ -175,7 +176,7 @@ function calc(){
   return true;
 }
 function toast(m,ms){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){t.classList.remove("on")},ms||4500)}
-var INAPP=/Zalo|FBAN|FBAV|FB_IAB|Instagram|Line\/|Messenger|Viber|MicroMessenger/i.test(navigator.userAgent||"");
+var UA=navigator.userAgent||"",INAPP=/Zalo|FBAN|FBAV|FB_IAB|Instagram|Line\/|Messenger|Viber|MicroMessenger|; wv\)/i.test(UA)||(/iPhone|iPad|iPod/.test(UA)&&!/Safari\//.test(UA));
 var HELP="Bấm dấu ⋯ (hoặc biểu tượng chia sẻ) ở góc trên, chọn \"Mở bằng trình duyệt\" (Chrome/Safari) rồi xuất lại.";
 if(INAPP){var ia=$("inapp");document.querySelector("main").insertBefore(ia,document.querySelector("main .sub"));ia.hidden=false}
 $("cp").addEventListener("click",function(){var u=location.href,ok=function(){toast("Đã sao chép link. Hãy dán vào Chrome/Safari để mở.",4000)};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,function(){fb()})}else fb();function fb(){var t=document.createElement("textarea");t.value=u;document.body.appendChild(t);t.select();try{document.execCommand("copy");ok()}catch(e){toast(u,8000)}t.remove()}});
@@ -212,7 +213,8 @@ function exportPdf(){
   var rp=document.createElement("div"),btn=$("pdf"),fn="Tom-tat-khoan-vay-Ecolife-Riverside.pdf",handle=null;
   if(typeof html2pdf==="undefined"){toast("Chưa tải được thư viện tạo PDF. Hãy kiểm tra kết nối mạng rồi thử lại."+(INAPP?" "+HELP:""),9000);return}
   var go=function(){
-    btn.disabled=true;btn.textContent="Đang tạo PDF…";
+    btn.disabled=true;btn.textContent="Đang tạo PDF…";toast("Đang tạo PDF, vui lòng đợi vài giây…",30000);
+    var wd=setTimeout(function(){toast("Việc tạo PDF đang lâu hơn bình thường. "+(INAPP?HELP:"Hãy thử lại hoặc dùng máy tính."),12000)},25000);
     rp.className="pdfmode";rp.innerHTML=h;
     (document.fonts&&document.fonts.ready||Promise.resolve()).then(function(){
       return html2pdf().set({margin:[12,12,12,12],image:{type:"jpeg",quality:0.95},html2canvas:{scale:2,useCORS:true,backgroundColor:"#fff",scrollX:0,scrollY:0},
@@ -227,8 +229,8 @@ function exportPdf(){
       if(INAPP&&file&&navigator.canShare&&navigator.canShare({files:[file]})){
         return navigator.share({files:[file],title:fn}).then(function(){return "Đã mở chia sẻ file "+fn+". Chọn nơi lưu để hoàn tất."},function(e){return e&&e.name==="AbortError"?null:dl()})}
       return dl();
-    }).then(function(msg){if(msg)toast(msg)}).catch(function(e){toast("Không tạo được PDF: "+(e&&e.message||e)+(INAPP?" "+HELP:""),9000)}).then(function(){
-      btn.disabled=false;btn.textContent="Xuất file PDF";
+    }).then(function(msg){if(msg)toast(msg);else if(!INAPP)$("toast").classList.remove("on")}).catch(function(e){toast("Không tạo được PDF: "+(e&&e.message||e)+(INAPP?" "+HELP:""),9000)}).then(function(){
+      clearTimeout(wd);btn.disabled=false;btn.textContent="Xuất file PDF";
     });
   };
   if(window.showSaveFilePicker){
