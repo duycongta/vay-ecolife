@@ -50,6 +50,8 @@ tr.hi td{background:var(--hi)}
 tr.chg td{border-top:2px solid var(--acc)}
 .note{font-size:12px;color:var(--mute);margin-top:8px}
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);width:max-content;max-width:min(92vw,460px);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:8px;font-size:14px;line-height:1.45;box-shadow:0 6px 20px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .8s ease,transform .8s ease;z-index:50}
+#toast.act{pointer-events:auto}
+#toast .tv{display:block;margin-top:8px;min-height:36px;padding:6px 16px;background:var(--bg);color:var(--ink);border:0;border-radius:6px;font-weight:700;font-size:14px}
 #toast.on{opacity:1;transform:translate(-50%,0);transition:opacity .25s ease,transform .25s ease}
 #inapp{display:block}
 #inapp[hidden]{display:none}
@@ -197,7 +199,12 @@ function calc(){
     ov:[["Số tiền khách trả tháng đầu tiên",f(pay1)+D],["Số tiền khách trả tháng "+(pm+1)+" (đầu kỳ lãi thả nổi)",pm<N?f(payPost)+D:"–"],["Tổng lãi phát sinh toàn kỳ vay",f(tI)+D],["Tổng lãi chủ đầu tư hỗ trợ toàn kỳ",f(tS)+D],["Tổng lãi khách trả toàn kỳ",f(tK)+D]]};
   return true;
 }
-function toast(m,ms){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){t.classList.remove("on")},ms||4500)}
+var viewUrl=null;
+function toast(m,ms,view){var t=$("toast");t.textContent=m;t.classList.remove("act");
+  if(view&&viewUrl){var b=document.createElement("button");b.type="button";b.className="tv";b.textContent="Chạm để xem";
+    b.onclick=function(){var w=null;try{w=window.open(viewUrl,"_blank")}catch(e){}if(!w)toast("Không mở được file tại đây. Hãy mở file trong thư mục đã lưu.",5000)};
+    t.appendChild(b);t.classList.add("act")}
+  t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){t.classList.remove("on","act")},ms||4500)}
 var UA=navigator.userAgent||"",INAPP=/Zalo|FBAN|FBAV|FB_IAB|Instagram|Line\/|Messenger|Viber|MicroMessenger|; wv\)/i.test(UA)||(/iPhone|iPad|iPod/.test(UA)&&!/Safari\//.test(UA));
 var HELP="Bấm dấu ⋯ (hoặc biểu tượng chia sẻ) ở góc trên, chọn \"Mở bằng trình duyệt\" (Chrome/Safari) rồi xuất lại.";
 var ac=document.querySelector(".actions");ac.parentNode.insertBefore($("inapp"),ac.nextSibling);
@@ -248,6 +255,7 @@ function exportPdf(){
         for(var i=1;i<=pdf.internal.getNumberOfPages();i++){pdf.setPage(i);pdf.addImage(wmk,"PNG",(W-w)/2,(H-h)/2,w,h)}
       }).outputPdf("blob");
     }).then(function(blob){
+      if(viewUrl)URL.revokeObjectURL(viewUrl);viewUrl=URL.createObjectURL(blob);
       if(handle){return handle.createWritable().then(function(w){return w.write(blob).then(function(){return w.close()})}).then(function(){return "Xuất file thành công vào nơi bạn đã chọn: "+(handle.name||fn)})}
       var dl=function(){var a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();
         setTimeout(function(){URL.revokeObjectURL(url)},10000);
@@ -257,7 +265,7 @@ function exportPdf(){
       if(INAPP&&file&&navigator.canShare&&navigator.canShare({files:[file]})){
         return navigator.share({files:[file],title:fn}).then(function(){return "Đã mở chia sẻ file "+fn+". Chọn nơi lưu để hoàn tất."},function(e){return e&&e.name==="AbortError"?null:dl()})}
       return dl();
-    }).then(function(msg){if(msg)toast(msg);else if(!INAPP)$("toast").classList.remove("on")}).catch(function(e){toast("Không tạo được PDF: "+(e&&e.message||e)+(INAPP?" "+HELP:""),9000)}).then(function(){
+    }).then(function(msg){if(msg)toast(msg,9000,true);else if(!INAPP)$("toast").classList.remove("on")}).catch(function(e){toast("Không tạo được PDF: "+(e&&e.message||e)+(INAPP?" "+HELP:""),9000)}).then(function(){
       clearTimeout(wd);btn.disabled=false;btn.textContent="Xuất file PDF";
     });
   };
