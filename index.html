@@ -221,7 +221,7 @@ function exportPdf(){
      +'<p class="note">Dòng tô vàng là kỳ dự kiến thanh lý; đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả, tính trên lãi suất tối đa 11%/năm.</p>';
   }
   h+='<p class="note">Lưu ý: Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ. Kết quả chỉ mang tính tham khảo.</p>';
-  var rp=document.createElement("div"),btn=$("pdf"),fn="Tom-tat-khoan-vay-Ecolife-Riverside.pdf",handle=null;
+  var rp=document.createElement("div"),btn=$("pdf"),fn="Tom-tat-khoan-vay-Ecolife_"+(u===""?"Nhaptay":U[+u].c)+"_"+(function(d){var p=function(n){return(n<10?"0":"")+n};return p(d.getDate())+p(d.getMonth()+1)+p(d.getFullYear()%100)})(new Date())+".pdf",handle=null;
   if(typeof html2pdf==="undefined"){toast("Chưa tải được thư viện tạo PDF. Hãy kiểm tra kết nối mạng rồi thử lại."+(INAPP?" "+HELP:""),9000);return}
   var go=function(){
     btn.disabled=true;btn.textContent="Đang tạo PDF…";toast("Đang tạo PDF, vui lòng đợi vài giây…",30000);
