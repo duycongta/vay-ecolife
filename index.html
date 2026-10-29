@@ -120,6 +120,7 @@ tr.chg td{border-top:2px solid var(--acc)}
 <div class="note">Dòng tô vàng là kỳ dự kiến thanh lý. Đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh mỗi tháng = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả trong thời gian hỗ trợ (theo Thông báo số 36/2026/CSBH ngày 20/10/2026), tính trên lãi suất vay tối đa 11%/năm; phần lãi vượt 11% (nếu có) và gốc do khách trả.</div>
 </section>
 </main>
+<div id="inapp" class="warn" hidden style="display:block">Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 var PROMO={12:9.49,18:10.49,24:10.49},CAP=11;
@@ -173,7 +174,11 @@ function calc(){
     ov:[["Số tiền khách trả tháng đầu tiên",f(pay1)+D],["Số tiền khách trả tháng "+(pm+1)+" (đầu kỳ lãi thả nổi)",pm<N?f(payPost)+D:"–"],["Tổng lãi phát sinh toàn kỳ vay",f(tI)+D],["Tổng lãi chủ đầu tư hỗ trợ toàn kỳ",f(tS)+D],["Tổng lãi khách trả toàn kỳ",f(tK)+D]]};
   return true;
 }
-function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){t.classList.remove("on")},4500)}
+function toast(m,ms){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){t.classList.remove("on")},ms||4500)}
+var INAPP=/Zalo|FBAN|FBAV|FB_IAB|Instagram|Line\/|Messenger|Viber|MicroMessenger/i.test(navigator.userAgent||"");
+var HELP="Bấm dấu ⋯ (hoặc biểu tượng chia sẻ) ở góc trên, chọn \"Mở bằng trình duyệt\" (Chrome/Safari) rồi xuất lại.";
+if(INAPP){var ia=$("inapp");document.querySelector("main").insertBefore(ia,document.querySelector("main .sub"));ia.hidden=false}
+$("cp").addEventListener("click",function(){var u=location.href,ok=function(){toast("Đã sao chép link. Hãy dán vào Chrome/Safari để mở.",4000)};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,function(){fb()})}else fb();function fb(){var t=document.createElement("textarea");t.value=u;document.body.appendChild(t);t.select();try{document.execCommand("copy");ok()}catch(e){toast(u,8000)}t.remove()}});
 function place(){var u=navigator.userAgent||"";return /iPhone|iPad|iPod/.test(u)?"ứng dụng Tệp (Files) trên điện thoại":/Android/.test(u)?"thư mục Tải xuống (Downloads) của điện thoại":"thư mục Tải xuống của máy"}
 function opt(id){var e=$(id);return e.options[e.selectedIndex].text}
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -205,7 +210,7 @@ function exportPdf(){
   }
   h+='<p class="note">Lưu ý: Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ. Kết quả chỉ mang tính tham khảo.</p>';
   var rp=document.createElement("div"),btn=$("pdf"),fn="Tom-tat-khoan-vay-Ecolife-Riverside.pdf",handle=null;
-  if(typeof html2pdf==="undefined"){alert("Chưa tải được thư viện tạo PDF. Hãy kiểm tra kết nối mạng rồi thử lại.");return}
+  if(typeof html2pdf==="undefined"){toast("Chưa tải được thư viện tạo PDF. Hãy kiểm tra kết nối mạng rồi thử lại."+(INAPP?" "+HELP:""),9000);return}
   var go=function(){
     btn.disabled=true;btn.textContent="Đang tạo PDF…";
     rp.className="pdfmode";rp.innerHTML=h;
@@ -214,10 +219,15 @@ function exportPdf(){
         jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},pagebreak:{mode:["css","legacy"],avoid:["tr","h3","p.note"]}}).from(rp).outputPdf("blob");
     }).then(function(blob){
       if(handle){return handle.createWritable().then(function(w){return w.write(blob).then(function(){return w.close()})}).then(function(){return "Xuất file thành công vào nơi bạn đã chọn: "+(handle.name||fn)})}
-      var a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();
-      setTimeout(function(){URL.revokeObjectURL(url)},10000);
-      return "Xuất file thành công: "+fn+" (thường nằm trong "+place()+")";
-    }).then(function(msg){if(msg)toast(msg)}).catch(function(e){alert("Không tạo được PDF: "+(e&&e.message||e))}).then(function(){
+      var dl=function(){var a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();
+        setTimeout(function(){URL.revokeObjectURL(url)},10000);
+        if(INAPP){toast("Đã tạo file nhưng ứng dụng này có thể chặn tải về. "+HELP,9000);return null}
+        return "Xuất file thành công: "+fn+" (thường nằm trong "+place()+")"};
+      var file;try{file=new File([blob],fn,{type:"application/pdf"})}catch(e){}
+      if(INAPP&&file&&navigator.canShare&&navigator.canShare({files:[file]})){
+        return navigator.share({files:[file],title:fn}).then(function(){return "Đã mở chia sẻ file "+fn+". Chọn nơi lưu để hoàn tất."},function(e){return e&&e.name==="AbortError"?null:dl()})}
+      return dl();
+    }).then(function(msg){if(msg)toast(msg)}).catch(function(e){toast("Không tạo được PDF: "+(e&&e.message||e)+(INAPP?" "+HELP:""),9000)}).then(function(){
       btn.disabled=false;btn.textContent="Xuất file PDF";
     });
   };
