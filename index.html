@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tính khoản vay Ecolife Riverside – SeABank</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#14213d;--mute:#5b667a;--line:#dfe3ea;--acc:#c8102e;--accbg:#fdecef;--hi:#fff4cc;--hd:#14213d;--hdt:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--card:#18223a;--ink:#e8ecf5;--mute:#9aa6bd;--line:#2a3654;--acc:#ff5b73;--accbg:#3a1b26;--hi:#4a4220;--hd:#0a101c;--hdt:#e8ecf5}}
+:root[data-theme="dark"]{--bg:#0f1624;--card:#18223a;--ink:#e8ecf5;--mute:#9aa6bd;--line:#2a3654;--acc:#ff5b73;--accbg:#3a1b26;--hi:#4a4220;--hd:#0a101c;--hdt:#e8ecf5}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Be Vietnam Pro",system-ui,Arial,sans-serif;overflow-wrap:anywhere;
+padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+main{max-width:1000px;margin:0 auto;padding:clamp(10px,3vw,16px)}
+h1{font-size:clamp(18px,5.2vw,22px);line-height:1.3;margin:8px 0 4px}
+h2{font-size:clamp(16px,4.4vw,17px);margin:0 0 12px}
+.sub{color:var(--mute);margin:0 0 16px;font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:clamp(12px,3.5vw,16px);margin-bottom:16px;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px 12px}
+.grid>div{min-width:0}
+label{display:block;font-size:13px;color:var(--mute);margin-bottom:4px}
+input,select{display:block;width:100%;max-width:100%;min-width:0;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit;font-size:16px}
+select{text-overflow:ellipsis}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.hint{font-size:12px;color:var(--mute);margin-top:3px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+button{padding:11px 20px;border:0;border-radius:6px;background:var(--acc);color:#fff;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;min-height:44px}
+button.alt{background:transparent;color:var(--acc);border:1.5px solid var(--acc)}
+.chk{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;color:var(--mute)}
+.chk input{width:18px;height:18px;padding:0;flex:none}
+.warn{background:var(--accbg);color:var(--acc);padding:8px 12px;border-radius:6px;font-size:13px;margin-top:12px;display:none}
+table{border-collapse:collapse;width:100%}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+.res td{white-space:normal;vertical-align:top}
+.res td:last-child{text-align:right;font-weight:500;min-width:30%}
+.res tr.tot td{font-weight:700;background:var(--accbg);color:var(--acc);font-size:16px}
+.wrap{overflow:auto;max-height:70vh;max-height:70svh;border:1px solid var(--line);border-radius:6px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.wrap th{position:sticky;top:0;background:var(--hd);color:var(--hdt);font-weight:500;font-size:13px;z-index:2}
+.wrap th:first-child,.wrap td:first-child{position:sticky;left:0}
+.wrap th:first-child{z-index:3}
+.wrap td:first-child{background:var(--card);z-index:1}
+tr.hi td{background:var(--hi)}
+.wrap tr.hi td:first-child{background:var(--hi)}
+tr.chg td{border-top:2px solid var(--acc)}
+.note{font-size:12px;color:var(--mute);margin-top:8px}
+.swipe{display:none;font-size:12px;color:var(--mute);margin:-4px 0 8px}
+@media (max-width:640px){
+ .swipe{display:block}
+ .wrap th,.wrap td{padding:6px 8px;font-size:12px}
+ .wrap{max-height:60vh;max-height:60svh}
+ .res td{padding:8px 4px;font-size:14px}
+ .res td:last-child{min-width:38%}
+}
+@media (max-width:480px){
+ button{flex:1 1 100%}
+ .chk{flex:1 1 100%}
+ .res tr.tot td{font-size:15px}
+}
+/* ===== Báo cáo PDF (dựng ngoài màn hình rồi chụp thành PDF) ===== */
+.pdfmode{display:block;width:703px;margin:0;background:#fff;color:#000;font-family:"Be Vietnam Pro",system-ui,Arial,sans-serif;font-size:10pt;line-height:1.45;overflow-wrap:normal}
+.pdfmode h1{font-size:16pt;margin:0 0 2pt}
+.pdfmode h3{font-size:11.5pt;margin:14pt 0 5pt;padding-bottom:2pt;border-bottom:1.5px solid #c8102e;color:#c8102e;break-after:avoid}
+.pdfmode .meta{color:#555;font-size:9pt;margin:0 0 6pt}
+.pdfmode table{width:100%;border-collapse:collapse}
+.pdfmode th,.pdfmode td{padding:3pt 5pt;border:.5pt solid #bbb;white-space:normal;color:#000;background:none;position:static}
+.pdfmode .kv td:first-child{width:58%;text-align:left}
+.pdfmode .kv td:last-child{text-align:right;font-weight:500}
+.pdfmode .kv tr.tot td{font-weight:700;background:#fdecef;color:#c8102e}
+.pdfmode .sch th{background:#14213d;color:#fff;font-size:8pt;font-weight:500;text-align:right}
+.pdfmode .sch td{font-size:8pt;text-align:right;white-space:nowrap;padding:2pt 4pt}
+.pdfmode .sch th:first-child,.pdfmode .sch td:first-child{text-align:center}
+.pdfmode .sch thead{display:table-header-group}
+.pdfmode tr{break-inside:avoid}
+.pdfmode tr.hi td{background:#fff4cc}
+.pdfmode tr.chg td{border-top:1.5pt solid #c8102e}
+.pdfmode .note{color:#444;font-size:8.5pt}
+</style>
+</head>
+<body>
+<main>
+<h1>Tính khoản vay mua căn hộ Ecolife Riverside</h1>
+<p class="sub">Chính sách SeABank Bình Định – gói lãi suất hiệu lực từ 30/03/2026. Kết quả chỉ mang tính tham khảo.</p>
+
+<section class="card">
+<h2>Thông tin khoản vay</h2>
+<div class="grid">
+<div><label for="u">Mã căn hộ</label><select id="u"></select><div class="hint" id="info"></div></div>
+<div><label for="dc">Chiết khấu 2% đặt cọc sớm</label><select id="dc"><option value="1">Có (giá sau chiết khấu 2%)</option><option value="0">Không (giá niêm yết)</option></select><div class="hint">Chiết khấu 5% chỉ áp dụng khi thanh toán sớm 95%, không tính cho vay vốn.</div></div>
+<div><label for="v">Giá trị căn hộ (VNĐ)</label><input id="v" inputmode="numeric" value="2.069.696.434"><div class="hint">Tự điền theo mã căn, chọn "Nhập tay" để tự nhập</div></div>
+<div><label for="r">Tỷ lệ muốn vay (%)</label><input id="r" type="number" step="1" min="1" max="70" value="70"><div class="hint">Tối đa 70% giá trị TSĐB</div></div>
+<div><label for="t">Thời gian vay (tháng)</label><input id="t" type="number" min="60" max="240" value="240"><div class="hint">Từ 60 đến 240 tháng</div></div>
+<div><label for="p">Thời gian tham gia ưu đãi</label>
+<select id="p"><option value="12">Cố định 12 tháng – 9,49%</option><option value="18">Cố định 18 tháng – 10,49%</option><option value="24">Cố định 24 tháng – 10,49%</option></select></div>
+<div><label for="b">Lãi suất cơ sở (%/năm)</label><input id="b" type="number" step="0.01" value="8.6"><div class="hint">Sau ưu đãi: lãi suất cơ sở + 3,69%/năm. Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ.</div></div>
+<div><label for="y">Thời gian dự kiến thanh lý trước hạn (tháng)</label><input id="y" type="number" min="1" value="36"></div>
+<div><label for="g">Ân hạn gốc (tháng)</label><input id="g" type="number" min="0" max="36" value="0"><div class="hint">Tối đa 36 tháng hoặc theo HTLS của CĐT/NPP</div></div>
+<div><label for="h">Thời gian chủ đầu tư hỗ trợ lãi suất (tháng)</label><input id="h" type="number" min="0" value="15"><div class="hint">Tự điền theo tỷ lệ vay: 50–70% → 15 tháng; 30–49% → 24 tháng; dưới 30% → 36 tháng. Có thể giảm, không vượt mức tối đa. Lãi suất được hỗ trợ tối đa 11%/năm.</div></div>
+<div><label for="m">Phương thức trả nợ</label><select id="m"><option value="eq">Gốc đều, lãi theo dư nợ giảm dần</option><option value="an">Niên kim (tổng trả hàng tháng đều)</option></select></div>
+</div>
+<div class="actions"><button id="go" type="button">Tính toán</button><button id="pdf" type="button" class="alt">Xuất file PDF</button><label class="chk"><input type="checkbox" id="inc" checked>Kèm bảng chi tiết hàng tháng</label></div>
+<div class="warn" id="w"></div>
+</section>
+
+<section class="card" id="s1" hidden>
+<h2>1. Tính toán số tiền trả nợ trước hạn</h2>
+<table class="res"><tbody id="res"></tbody></table>
+<div class="note">Phí trả nợ trước hạn tính trên số gốc trả trước: ≤ 36 tháng: 2,5%; trên 36 đến 60 tháng: 1,5%; trên 60 tháng: miễn phí. Số liệu giả định thanh lý sau khi đã trả kỳ nợ của tháng đó.</div>
+</section>
+
+<section class="card" id="s2" hidden>
+<h2>2. Bảng tính lãi và vốn hàng tháng</h2>
+<div class="swipe">← Vuốt ngang để xem đủ các cột →</div>
+<div class="wrap"><table><thead><tr><th>Kỳ</th><th>Lãi suất</th><th>Dư nợ đầu kỳ</th><th>Gốc trả</th><th>Lãi phát sinh</th><th>Lãi được hỗ trợ</th><th>Lãi khách trả</th><th>Tổng khách phải trả</th><th>Dư nợ cuối kỳ</th></tr></thead><tbody id="tb"></tbody></table></div>
+<div class="note">Dòng tô vàng là kỳ dự kiến thanh lý. Đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh mỗi tháng = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả trong thời gian hỗ trợ (theo Thông báo số 36/2026/CSBH ngày 20/10/2026), tính trên lãi suất vay tối đa 11%/năm; phần lãi vượt 11% (nếu có) và gốc do khách trả.</div>
+</section>
+</main>
+<script>
+var PROMO={12:9.49,18:10.49,24:10.49},CAP=11;
+var $=function(i){return document.getElementById(i)};
+var f=function(n){n=Math.round(n);return(n===0?0:n).toLocaleString("vi-VN")};
+var D="\u00a0đ",last=null;
+var pc=function(n){return n.toLocaleString("vi-VN",{maximumFractionDigits:2})+"%"};
+$("v").addEventListener("input",function(e){var d=e.target.value.replace(/\D/g,"");e.target.value=d?Number(d).toLocaleString("vi-VN"):""});
+function calc(){
+  var w=$("w"),msg=[];
+  var V=Number($("v").value.replace(/\D/g,"")),r=+$("r").value,N=Math.round(+$("t").value),
+      pm=+$("p").value,base=+$("b").value,Y=Math.round(+$("y").value),g=Math.round(+$("g").value||0),mode=$("m").value,H=Math.round(+$("h").value||0),HM=hmax(r);
+  if(!V){msg.push("Nhập giá trị căn hộ.")}
+  if(r>70||r<=0){msg.push("Tỷ lệ vay phải lớn hơn 0 và tối đa 70%.")}
+  if(N<60||N>240){msg.push("Thời gian vay phải từ 60 đến 240 tháng.")}
+  if(g<0||g>36||g>=N){msg.push("Ân hạn gốc từ 0 đến 36 tháng và nhỏ hơn thời gian vay.")}
+  if(H<0||H>HM||H>N){msg.push("Theo thông báo của chủ đầu tư, với tỷ lệ vay "+r+"% thời gian hỗ trợ lãi suất tối đa "+HM+" tháng.")}
+  if(Y<1||Y>N){msg.push("Thời gian thanh lý phải từ 1 đến "+N+" tháng.")}
+  if(msg.length){w.style.display="block";w.textContent=msg.join(" ");$("s1").hidden=$("s2").hidden=true;last=null;return false}
+  w.style.display=r>65?"block":"none";
+  if(r>65)w.textContent="Lưu ý: tỷ lệ vay trên 65% không được chấp nhận bảng kê thu nhập, cần chứng minh thu nhập đầy đủ.";
+  var P0=V*r/100,pr=PROMO[pm],fl=base+3.69,bal=P0,pmt=0,rows=[],cumI=0,cumP=0,cumS=0,cumK=0,atY=null,html="",pay1=0,payPost=0;
+  for(var m=1;m<=N;m++){
+    var rate=m<=pm?pr:fl,i=rate/1200,intr=bal*i,prin;
+    if(m<=g){prin=0}
+    else if(mode==="eq"){prin=P0/(N-g)}
+    else{var rem=N-m+1;if(m===g+1||m===pm+1){pmt=i>0?bal*i/(1-Math.pow(1+i,-rem)):bal/rem}prin=pmt-intr}
+    if(m===N)prin=bal;
+    var end=bal-prin;if(end<0.5)end=0;
+    var sup=m<=H?bal*Math.min(rate,CAP)/1200:0;cumI+=intr;cumP+=prin;cumS+=sup;cumK+=intr-sup;
+    if(m===Y)atY={bal:end,cumI:cumI,cumP:cumP,cumS:cumS,cumK:cumK,rate:rate};
+    html+='<tr'+(m===Y?' class="hi"':m===pm+1?' class="chg"':'')+'><td>'+m+'</td><td>'+pc(rate)+'</td><td>'+f(bal)+'</td><td>'+f(prin)+'</td><td>'+f(intr)+'</td><td>'+(sup?f(sup):'–')+'</td><td>'+f(intr-sup)+'</td><td>'+f(prin+intr-sup)+'</td><td>'+f(end)+'</td></tr>';
+    if(m===1)pay1=prin+intr-sup;if(m===pm+1)payPost=prin+intr-sup;
+    bal=end;
+  }
+  $("tb").innerHTML=html;
+  var tI=cumI,tS=cumS,tK=cumK;
+  var fee=Y<=36?2.5:Y<=60?1.5:0,feeAmt=atY.bal*fee/100;
+  var R=[["Giá trị căn hộ",f(V)+D],["Số tiền vay ("+r+"%)",f(P0)+D],["Vốn tự có",f(V-P0)+D],
+    ["Thời điểm thanh lý","Tháng "+Y+" ("+(Y<=pm?"trong":"sau")+" thời gian ưu đãi, lãi suất "+pc(atY.rate)+")"],
+    ["Gốc đã trả đến tháng "+Y,f(atY.cumP)+D],["Lãi phát sinh đến tháng "+Y,f(atY.cumI)+D],["Lãi được chủ đầu tư hỗ trợ ("+Math.min(H,Y)+" tháng, lãi suất hỗ trợ tối đa 11%/năm)",f(atY.cumS)+D],["Lãi khách hàng thực trả đến tháng "+Y,f(atY.cumK)+D],
+    ["Dư nợ gốc còn lại cần tất toán",f(atY.bal)+D],
+    ["Phí trả nợ trước hạn ("+pc(fee)+")",f(feeAmt)+D]];
+  var h=R.map(function(x){return"<tr><td>"+x[0]+"</td><td>"+x[1]+"</td></tr>"}).join("");
+  h+='<tr class="tot"><td>Tổng tiền trả nợ trước hạn</td><td>'+f(atY.bal+feeAmt)+D+'</td></tr>';
+  h+="<tr><td>Tổng chi phí vay đến lúc thanh lý (lãi khách trả + phí)</td><td>"+f(atY.cumK+feeAmt)+D+"</td></tr>";
+  $("res").innerHTML=h;
+  $("s1").hidden=$("s2").hidden=false;
+  var tot=[["Tổng tiền trả nợ trước hạn",f(atY.bal+feeAmt)+D],["Tổng chi phí vay đến lúc thanh lý (lãi khách trả + phí)",f(atY.cumK+feeAmt)+D]];
+  last={V:V,r:r,N:N,pm:pm,Y:Y,R:R,tot:tot,rows:html,
+    ov:[["Số tiền khách trả tháng đầu tiên",f(pay1)+D],["Số tiền khách trả tháng "+(pm+1)+" (đầu kỳ lãi thả nổi)",pm<N?f(payPost)+D:"–"],["Tổng lãi phát sinh toàn kỳ vay",f(tI)+D],["Tổng lãi chủ đầu tư hỗ trợ toàn kỳ",f(tS)+D],["Tổng lãi khách trả toàn kỳ",f(tK)+D]]};
+  return true;
+}
+function opt(id){var e=$(id);return e.options[e.selectedIndex].text}
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function kv(rows,cls){return'<table class="kv"><tbody>'+rows.map(function(x){return"<tr><td>"+esc(x[0])+"</td><td>"+esc(x[1])+"</td></tr>"}).join("")+(cls||"")+"</tbody></table>"}
+function exportPdf(){
+  if(!calc()){$("w").scrollIntoView({block:"center"});return}
+  var L=last,u=$("u").value,inp=[
+    ["Mã căn hộ",u===""?"Nhập tay":U[+u].c],
+    ["Thông tin căn",$("info").textContent||"–"],
+    ["Chiết khấu 2% đặt cọc sớm",opt("dc")],
+    ["Giá trị căn hộ",f(L.V)+D],
+    ["Tỷ lệ vay",L.r+"%"],
+    ["Thời gian vay",L.N+" tháng"],
+    ["Thời gian tham gia ưu đãi",opt("p")],
+    ["Lãi suất cơ sở",pc(+$("b").value)+"/năm (sau ưu đãi: +3,69%/năm). Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ."],
+    ["Thời gian dự kiến thanh lý trước hạn","Tháng "+L.Y],
+    ["Ân hạn gốc",($("g").value||0)+" tháng"],
+    ["Thời gian CĐT hỗ trợ lãi suất",($("h").value||0)+" tháng (tối đa 11%/năm)"],
+    ["Phương thức trả nợ",opt("m")]];
+  var tr=L.tot.map(function(x,i){return'<tr'+(i==0?' class="tot"':'')+"><td>"+esc(x[0])+"</td><td>"+esc(x[1])+"</td></tr>"}).join("");
+  var h='<h1>Tóm tắt tính toán khoản vay Ecolife Riverside</h1><p class="meta">SeABank Bình Định – gói lãi suất hiệu lực từ 30/03/2026 · Ngày lập: '+new Date().toLocaleDateString("vi-VN")+'</p>'
+   +'<h3>I. Thông tin khoản vay</h3>'+kv(inp)
+   +'<h3>II. Tính toán số tiền trả nợ trước hạn</h3>'+kv(L.R,tr)
+   +'<p class="note">Phí trả nợ trước hạn tính trên số gốc trả trước: ≤ 36 tháng: 2,5%; trên 36 đến 60 tháng: 1,5%; trên 60 tháng: miễn phí.</p>'
+   +'<h3>III. Tổng quan toàn kỳ vay</h3>'+kv(L.ov);
+  if($("inc").checked){
+    h+='<h3>IV. Bảng tính lãi và vốn hàng tháng</h3><table class="sch">'+document.querySelector("#s2 thead").outerHTML+"<tbody>"+L.rows+"</tbody></table>"
+     +'<p class="note">Dòng tô vàng là kỳ dự kiến thanh lý; đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả, tính trên lãi suất tối đa 11%/năm.</p>';
+  }
+  h+='<p class="note">Lưu ý: Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ. Kết quả chỉ mang tính tham khảo.</p>';
+  var rp=document.createElement("div"),btn=$("pdf"),fn="Tom-tat-khoan-vay-Ecolife-Riverside.pdf",handle=null;
+  if(typeof html2pdf==="undefined"){alert("Chưa tải được thư viện tạo PDF. Hãy kiểm tra kết nối mạng rồi thử lại.");return}
+  var go=function(){
+    btn.disabled=true;btn.textContent="Đang tạo PDF…";
+    rp.className="pdfmode";rp.innerHTML=h;
+    (document.fonts&&document.fonts.ready||Promise.resolve()).then(function(){
+      return html2pdf().set({margin:[12,12,12,12],image:{type:"jpeg",quality:0.95},html2canvas:{scale:2,useCORS:true,backgroundColor:"#fff",scrollX:0,scrollY:0},
+        jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},pagebreak:{mode:["css","legacy"],avoid:["tr","h3","p.note"]}}).from(rp).outputPdf("blob");
+    }).then(function(blob){
+      if(handle){return handle.createWritable().then(function(w){return w.write(blob).then(function(){return w.close()})})}
+      var a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();
+      setTimeout(function(){URL.revokeObjectURL(url)},10000);
+    }).catch(function(e){alert("Không tạo được PDF: "+(e&&e.message||e))}).then(function(){
+      btn.disabled=false;btn.textContent="Xuất file PDF";
+    });
+  };
+  if(window.showSaveFilePicker){
+    window.showSaveFilePicker({suggestedName:fn,types:[{description:"PDF",accept:{"application/pdf":[".pdf"]}}]}).then(function(hd){handle=hd;go()},function(e){if(e&&e.name!=="AbortError")go()});
+  }else go();
+}
+function hmax(r){return r<30?36:r<50?24:15}
+$("r").addEventListener("input",function(){$("h").value=hmax(+$("r").value)});
+$("h").value=hmax(+$("r").value);
+var RAW="CT2-1007|77.5|3|Đ-N|S|2107648197|37951763;CT1-2310|63.7|2|Đ-N|S|1645211270|29637837;CT1-1110|63.6|2|Đ-N|S|1692189216|30476322;CT1-2412A|63.8|2|T-N|S|1490285746|26871716;CT2-1003|63.2|2|T-B|D|1540371360|27763662;CT2-1102|68.1|2,5|T-B|D|1693551537|30518950;CT1-2402|59.1|2|T-B|D|1369173610|24689885;CT1-2007|63.8|2|Đ-N|S|1712433079|30838633;CT2-1912|63.8|2|Đ-N|S|1730237444|31156568;CT1-1508|63.8|2|Đ-N|S|1713748732|30862127;CT1-1510|63.8|2|Đ-N|S|1712433079|30838633;CT1-1604|58.8|2|T-B|D|1416721982|25537743;CT1-2008|63.8|2|Đ-N|S|1712433079|30838633;CT1-1610|63.7|2|Đ-N|S|1712433079|30838226;CT1-1812A|63.8|2|T-N|S|1542214344|27799013;CT1-1712A|63.8|2|T-N|S|1542214344|27799013;CT2-1111|63.6|2|Đ-N|S|1741572816|31358172;CT2-1210|63.6|2|Đ-N|S|1741572816|31358172;CT2-12B02|68.3|2,5|T-B|D|1620294806|29211608;CT2-12B07|77.6|3|Đ-N|S|2158385291|38858189;CT2-2411|63.8|2|Đ-N|S|1679801467|30255926;CT2-2505|63.7|2|Đ-B|C|1497483111|26999834;CT1-12B05|63.7|2|Đ-N|S|1661674070|29931815;CT1-1605|63.7|2|Đ-N|S|1712433079|30838226;CT1-1607|63.7|2|Đ-N|S|1712433079|30838226;CT1-2312A|63.8|2|T-N|S|1490285746|26871716;CT2-1008|63.6|2|Đ-N|S|1741572816|31358172;CT2-1009|63.6|2|Đ-N|S|1741572816|31358172;CT2-1109|63.6|2|Đ-N|S|1741572816|31358172;CT2-1212|63.6|2|Đ-N|S|1741572816|31358172;CT2-1912A|63.7|2|Đ-N|S|1639040008|29527636;CT2-2012|63.8|2|Đ-N|S|1730237444|31156568;CT2-2015|58.8|2|T-B|D|1430346605|25781040;CT2-2016|59.1|2|T-B|D|1430346605|25782260;CT2-2303|63.3|2|T-B|D|1526962339|27524622;CT1-1108|63.6|2|Đ-N|S|1708376479|30765380;CT2-1611|63.8|2|Đ-N|S|1747049459|31456783;CT1-1207|63.6|2|Đ-N|S|1708376479|30765380;CT1-1209|63.6|2|Đ-N|S|1692189216|30476322;CT1-1210|63.6|2|Đ-N|S|1692189216|30476322;CT1-1516|68.3|2,5|T-B|D|1666650892|30039395;CT1-2012A|63.8|2|T-N|S|1542214344|27799013;CT2-1002|68.1|2,5|T-B|D|1693551537|30518950;CT2-1011|63.6|2|Đ-N|S|1741572816|31358172;CT2-1012|63.6|2|Đ-N|S|1741572816|31358172;CT2-12B09|63.8|2|Đ-N|S|1696613415|30556139;CT2-12B12B|58.8|2|T-B|D|1375848113|24807852;CT2-1903|63.3|2|T-B|D|1572797251|28343103;CT2-2007|77.6|3|Đ-N|S|2151174435|38729424;CT2-2008|63.6|2|Đ-N|S|1730237444|31155755;CT1-1506|63.8|2|Đ-N|S|1712433079|30838633;CT1-1906|63.8|2|Đ-N|S|1712433079|30838633;CT1-2010|63.8|2|Đ-N|S|1712433079|30838633;CT2-1902|68.3|2,5|T-B|D|1652389725|29784731;CT2-1012A|63.6|2|Đ-N|S|1642524512|29589452;CT2-1612|63.8|2|Đ-N|S|1747049459|31456783;CT2-1105|63.6|2|Đ-B|C|1554944713|28025527;CT2-1602|68.3|2,5|T-B|D|1668437150|30071293;CT2-1603|63.3|2|T-B|D|1588075555|28615929",
+VW={S:"Sông Hà Thanh",D:"Đường ĐBP",C:"City"},
+U=RAW.split(";").map(function(s){var a=s.split("|");return{c:a[0],a:a[1],p:a[2],d:a[3],v:VW[a[4]],l:+a[5],k:+a[6]}});
+$("u").innerHTML='<option value="">Nhập tay</option>'+U.map(function(x,i){return'<option value="'+i+'">'+x.c+'</option>'}).join("");
+$("u").value="0";
+function fill(){
+  var s=$("u").value;
+  if(s!==""){var x=U[+s],p=x.l-($("dc").value==="1"?x.k:0);
+    $("v").value=p.toLocaleString("vi-VN");
+    $("info").textContent="Tòa "+x.c.slice(0,3)+" · "+x.a.replace(".",",")+" m² · "+x.p+" PN · "+x.d+" · View "+x.v+" · Niêm yết "+f(x.l)+" đ"}
+  else{$("info").textContent=""}
+  calc();
+}
+$("u").addEventListener("change",fill);$("dc").addEventListener("change",fill);
+$("go").addEventListener("click",calc);$("pdf").addEventListener("click",exportPdf);
+fill();
+calc();
+</script>
+</body>
+</html>
