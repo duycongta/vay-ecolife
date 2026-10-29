@@ -190,7 +190,7 @@ var UA=navigator.userAgent||"",INAPP=/Zalo|FBAN|FBAV|FB_IAB|Instagram|Line\/|Mes
 var HELP="Bấm dấu ⋯ (hoặc biểu tượng chia sẻ) ở góc trên, chọn \"Mở bằng trình duyệt\" (Chrome/Safari) rồi xuất lại.";
 var ac=document.querySelector(".actions");ac.parentNode.insertBefore($("inapp"),ac.nextSibling);
 $("cp").addEventListener("click",function(){var u=location.href,ok=function(){toast("Đã sao chép link. Hãy dán vào Chrome/Safari để mở.",4000)};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,function(){fb()})}else fb();function fb(){var t=document.createElement("textarea");t.value=u;document.body.appendChild(t);t.select();try{document.execCommand("copy");ok()}catch(e){toast(u,8000)}t.remove()}});
-function place(){var u=navigator.userAgent||"";return /iPhone|iPad|iPod/.test(u)?"ứng dụng Tệp (Files) trên điện thoại":/Android/.test(u)?"thư mục Tải xuống (Downloads) của điện thoại":"thư mục Tải xuống của máy"}
+function place(){var u=navigator.userAgent||"";return /iPhone|iPad|iPod/.test(u)?"Tệp (Files) ▸ Tải xuống ▸ ":/Android/.test(u)?"/Download/":/Windows/.test(u)?"Downloads\\":"Downloads/"}
 function opt(id){var e=$(id);return e.options[e.selectedIndex].text}
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 function kv(rows,cls){return'<table class="kv"><tbody>'+rows.map(function(x){return"<tr><td>"+esc(x[0])+"</td><td>"+esc(x[1])+"</td></tr>"}).join("")+(cls||"")+"</tbody></table>"}
@@ -235,7 +235,7 @@ function exportPdf(){
       var dl=function(){var a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();
         setTimeout(function(){URL.revokeObjectURL(url)},10000);
         if(INAPP){toast("Đã tạo file nhưng ứng dụng này có thể chặn tải về. "+HELP,9000);return null}
-        return "Xuất file thành công: "+fn+" (thường nằm trong "+place()+")"};
+        return "Xuất file thành công, thường lưu tại: "+place()+fn};
       var file;try{file=new File([blob],fn,{type:"application/pdf"})}catch(e){}
       if(INAPP&&file&&navigator.canShare&&navigator.canShare({files:[file]})){
         return navigator.share({files:[file],title:fn}).then(function(){return "Đã mở chia sẻ file "+fn+". Chọn nơi lưu để hoàn tất."},function(e){return e&&e.name==="AbortError"?null:dl()})}
