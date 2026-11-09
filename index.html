@@ -144,7 +144,7 @@ main{position:relative;z-index:1}
 </section>
 </main>
 <div id="inapp" class="warn" hidden>Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên có thể không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
-<p class="note" style="text-align:center">Phiên bản v7 · 09/11/2026</p>
+<p class="note" style="text-align:center">Phiên bản v8 · 09/11/2026</p>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 var PROMO={12:9.49,18:10.49,24:10.49},CAP=11;
@@ -207,15 +207,15 @@ function kv(rows,cls){return'<table class="kv"><tbody>'+rows.map(function(x){ret
 function exportPdf(){
   if(INAPP)$("inapp").hidden=false;
   if(!calc()){$("w").scrollIntoView({block:"center"});return}
-  var L=last,u=$("u").value,inp=[
+  var L=last,u=$("u").value,R=L.R,inp=[
     ["Mã căn hộ",u===""?"Nhập tay":U[+u].c],
     ["Thông tin căn",$("info").textContent||"–"],
     ["Chiết khấu 2% đặt cọc sớm",opt("dc")],
-    ["Giá trị căn hộ",f(L.V)+D],
-    ["Tỷ lệ vay",L.r+"%"],
+    R[0],R[1],R[2],
     ["Thời gian vay",L.N+" tháng"],
-    ["Thời gian tham gia ưu đãi",opt("p")],
-    ["Lãi suất cơ sở",pc(+$("b").value)+"/năm (sau ưu đãi: +3,69%/năm). Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ."],
+    R[3],
+    ["Lãi suất cơ sở",pc(+$("b").value)+"/năm"],
+    R[4],
     ["Ân hạn gốc",($("g").value||0)+" tháng"],
     ["Thời gian CĐT hỗ trợ lãi suất",($("h").value||0)+" tháng (tối đa 11%/năm)"],
     ["Phương thức trả nợ",opt("m")]];
@@ -223,9 +223,8 @@ function exportPdf(){
       nts=document.querySelectorAll("#s1 .note");
   var h='<div class="pdfhead"><img src="'+document.querySelector(".logo").src+'" alt="SeABank"><div class="pt"><h1>Tóm tắt tính toán khoản vay</h1><p class="meta"><b>'+esc(tx(".brand-info b"))+'</b> · 04-06-08 Ỷ Lan - P. Quy Nhơn<br>Hotline: 1900 555 587<br>Căn hộ Ecolife Riverside · Ngày lập: '+new Date().toLocaleDateString("vi-VN")+'</p></div></div>'
    +'<p class="note">'+esc(tx("main .sub"))+'</p>'
-   +'<h3>Thông tin khoản vay</h3>'+kv(inp)
+   +'<h3>1. '+esc(tx("#s1 h2").replace(/^1\.\s*/,""))+'</h3>'+kv(inp)
    +($("w").style.display==="block"?'<p class="note"><b>'+esc($("w").textContent)+'</b></p>':'')
-   +'<h3>1. '+esc(tx("#s1 h2").replace(/^1\.\s*/,""))+'</h3>'+kv(L.R)
    +Array.prototype.map.call(nts,function(n){return'<p class="note">'+esc(n.textContent.trim())+'</p>'}).join("");
   if($("inc").checked){
     h+='<h3>2. '+esc(tx("#s2 h2").replace(/^2\.\s*/,""))+'</h3><table class="sch">'+document.querySelector("#s2 thead").outerHTML+"<tbody>"+L.rows+"</tbody></table>"
