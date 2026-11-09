@@ -122,7 +122,6 @@ main{position:relative;z-index:1}
 <div><label for="p">Thời gian tham gia ưu đãi</label>
 <select id="p"><option value="12">Cố định 12 tháng – 9,49%</option><option value="18">Cố định 18 tháng – 10,49%</option><option value="24">Cố định 24 tháng – 10,49%</option></select></div>
 <div><label for="b">Lãi suất cơ sở (%/năm)</label><input id="b" type="number" step="0.01" value="8.6"><div class="hint">Sau ưu đãi: lãi suất cơ sở + 3,69%/năm. Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ.</div></div>
-<div><label for="y">Thời gian dự kiến thanh lý trước hạn (tháng)</label><input id="y" type="number" min="1" value="36"></div>
 <div><label for="g">Ân hạn gốc (tháng)</label><input id="g" type="number" min="0" max="36" value="0"><div class="hint">Tối đa 36 tháng hoặc theo HTLS của CĐT/NPP</div></div>
 <div><label for="h">Thời gian chủ đầu tư hỗ trợ lãi suất (tháng)</label><input id="h" type="number" min="0" value="15"><div class="hint">Tự điền theo tỷ lệ vay: 50–70% → 15 tháng; 30–49% → 24 tháng; dưới 30% → 36 tháng. Có thể giảm, không vượt mức tối đa. Lãi suất được hỗ trợ tối đa 11%/năm.</div></div>
 <div><label for="m">Phương thức trả nợ</label><select id="m"><option value="eq">Gốc đều, lãi theo dư nợ giảm dần</option><option value="an">Niên kim (tổng trả hàng tháng đều)</option></select></div>
@@ -134,18 +133,18 @@ main{position:relative;z-index:1}
 <section class="card" id="s1" hidden>
 <h2>1. Tính toán số tiền trả nợ trước hạn</h2>
 <table class="res"><tbody id="res"></tbody></table>
-<div class="note">Phí trả nợ trước hạn tính trên số gốc trả trước: ≤ 36 tháng: 2,5%; trên 36 đến 60 tháng: 1,5%; trên 60 tháng: miễn phí. Số liệu giả định thanh lý sau khi đã trả kỳ nợ của tháng đó.</div>
+<div class="note">Phí trả nợ trước hạn tính trên số gốc trả trước: ≤ 36 tháng: 2,5%; trên 36 đến 60 tháng: 1,5%; trên 60 tháng: miễn phí.</div>
 </section>
 
 <section class="card" id="s2" hidden>
 <h2>2. Bảng tính lãi và vốn hàng tháng</h2>
 <div class="swipe">← Vuốt ngang để xem đủ các cột →</div>
 <div class="wrap"><table><thead><tr><th>Kỳ</th><th>Lãi suất</th><th>Dư nợ đầu kỳ</th><th>Gốc trả</th><th>Lãi phát sinh</th><th>Lãi được hỗ trợ</th><th>Lãi khách trả</th><th>Tổng khách phải trả</th><th>Dư nợ cuối kỳ</th></tr></thead><tbody id="tb"></tbody></table></div>
-<div class="note">Dòng tô vàng là kỳ dự kiến thanh lý. Đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh mỗi tháng = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả trong thời gian hỗ trợ (theo Thông báo số 36/2026/CSBH ngày 20/10/2026), tính trên lãi suất vay tối đa 11%/năm; phần lãi vượt 11% (nếu có) và gốc do khách trả.</div>
+<div class="note">Đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh mỗi tháng = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả trong thời gian hỗ trợ (theo Thông báo số 36/2026/CSBH ngày 20/10/2026), tính trên lãi suất vay tối đa 11%/năm; phần lãi vượt 11% (nếu có) và gốc do khách trả.</div>
 </section>
 </main>
 <div id="inapp" class="warn" hidden>Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên có thể không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
-<p class="note" style="text-align:center">Phiên bản v3 · 29/10/2026</p>
+<p class="note" style="text-align:center">Phiên bản v4 · 09/11/2026</p>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 var PROMO={12:9.49,18:10.49,24:10.49},CAP=11;
@@ -157,17 +156,16 @@ $("v").addEventListener("input",function(e){var d=e.target.value.replace(/\D/g,"
 function calc(){
   var w=$("w"),msg=[];
   var V=Number($("v").value.replace(/\D/g,"")),r=+$("r").value,N=Math.round(+$("t").value),
-      pm=+$("p").value,base=+$("b").value,Y=Math.round(+$("y").value),g=Math.round(+$("g").value||0),mode=$("m").value,H=Math.round(+$("h").value||0),HM=hmax(r);
+      pm=+$("p").value,base=+$("b").value,g=Math.round(+$("g").value||0),mode=$("m").value,H=Math.round(+$("h").value||0),HM=hmax(r);
   if(!V){msg.push("Nhập giá trị căn hộ.")}
   if(r>70||r<=0){msg.push("Tỷ lệ vay phải lớn hơn 0 và tối đa 70%.")}
   if(N<60||N>240){msg.push("Thời gian vay phải từ 60 đến 240 tháng.")}
   if(g<0||g>36||g>=N){msg.push("Ân hạn gốc từ 0 đến 36 tháng và nhỏ hơn thời gian vay.")}
   if(H<0||H>HM||H>N){msg.push("Theo thông báo của chủ đầu tư, với tỷ lệ vay "+r+"% thời gian hỗ trợ lãi suất tối đa "+HM+" tháng.")}
-  if(Y<1||Y>N){msg.push("Thời gian thanh lý phải từ 1 đến "+N+" tháng.")}
   if(msg.length){w.style.display="block";w.textContent=msg.join(" ");$("s1").hidden=$("s2").hidden=true;last=null;return false}
   w.style.display=r>65?"block":"none";
   if(r>65)w.textContent="Lưu ý: tỷ lệ vay trên 65% không được chấp nhận bảng kê thu nhập, cần chứng minh thu nhập đầy đủ.";
-  var P0=V*r/100,pr=PROMO[pm],fl=base+3.69,bal=P0,pmt=0,rows=[],cumI=0,cumP=0,cumS=0,cumK=0,atY=null,html="",pay1=0,payPost=0;
+  var P0=V*r/100,pr=PROMO[pm],fl=base+3.69,bal=P0,pmt=0,rows=[],cumI=0,cumP=0,cumS=0,cumK=0,html="",pay1=0,payPost=0;
   for(var m=1;m<=N;m++){
     var rate=m<=pm?pr:fl,i=rate/1200,intr=bal*i,prin;
     if(m<=g){prin=0}
@@ -176,26 +174,17 @@ function calc(){
     if(m===N)prin=bal;
     var end=bal-prin;if(end<0.5)end=0;
     var sup=m<=H?bal*Math.min(rate,CAP)/1200:0;cumI+=intr;cumP+=prin;cumS+=sup;cumK+=intr-sup;
-    if(m===Y)atY={bal:end,cumI:cumI,cumP:cumP,cumS:cumS,cumK:cumK,rate:rate};
-    html+='<tr'+(m===Y?' class="hi"':m===pm+1?' class="chg"':'')+'><td>'+m+'</td><td>'+pc(rate)+'</td><td>'+f(bal)+'</td><td>'+f(prin)+'</td><td>'+f(intr)+'</td><td>'+(sup?f(sup):'–')+'</td><td>'+f(intr-sup)+'</td><td>'+f(prin+intr-sup)+'</td><td>'+f(end)+'</td></tr>';
+    html+='<tr'+(m===pm+1?' class="chg"':'')+'><td>'+m+'</td><td>'+pc(rate)+'</td><td>'+f(bal)+'</td><td>'+f(prin)+'</td><td>'+f(intr)+'</td><td>'+(sup?f(sup):'–')+'</td><td>'+f(intr-sup)+'</td><td>'+f(prin+intr-sup)+'</td><td>'+f(end)+'</td></tr>';
     if(m===1)pay1=prin+intr-sup;if(m===pm+1)payPost=prin+intr-sup;
     bal=end;
   }
   $("tb").innerHTML=html;
   var tI=cumI,tS=cumS,tK=cumK;
-  var fee=Y<=36?2.5:Y<=60?1.5:0,feeAmt=atY.bal*fee/100;
-  var R=[["Giá trị căn hộ",f(V)+D],["Số tiền vay ("+r+"%)",f(P0)+D],["Vốn tự có",f(V-P0)+D],
-    ["Thời điểm thanh lý","Tháng "+Y+" ("+(Y<=pm?"trong":"sau")+" thời gian ưu đãi, lãi suất "+pc(atY.rate)+")"],
-    ["Gốc đã trả đến tháng "+Y,f(atY.cumP)+D],["Lãi phát sinh đến tháng "+Y,f(atY.cumI)+D],["Lãi được chủ đầu tư hỗ trợ ("+Math.min(H,Y)+" tháng, lãi suất hỗ trợ tối đa 11%/năm)",f(atY.cumS)+D],["Lãi khách hàng thực trả đến tháng "+Y,f(atY.cumK)+D],
-    ["Dư nợ gốc còn lại cần tất toán",f(atY.bal)+D],
-    ["Phí trả nợ trước hạn ("+pc(fee)+")",f(feeAmt)+D]];
+  var R=[["Giá trị căn hộ",f(V)+D],["Số tiền vay ("+r+"%)",f(P0)+D],["Vốn tự có",f(V-P0)+D]];
   var h=R.map(function(x){return"<tr><td>"+x[0]+"</td><td>"+x[1]+"</td></tr>"}).join("");
-  h+='<tr class="tot"><td>Tổng tiền trả nợ trước hạn</td><td>'+f(atY.bal+feeAmt)+D+'</td></tr>';
-  h+="<tr><td>Tổng chi phí vay đến lúc thanh lý (lãi khách trả + phí)</td><td>"+f(atY.cumK+feeAmt)+D+"</td></tr>";
   $("res").innerHTML=h;
   $("s1").hidden=$("s2").hidden=false;
-  var tot=[["Tổng tiền trả nợ trước hạn",f(atY.bal+feeAmt)+D],["Tổng chi phí vay đến lúc thanh lý (lãi khách trả + phí)",f(atY.cumK+feeAmt)+D]];
-  last={V:V,r:r,N:N,pm:pm,Y:Y,R:R,tot:tot,rows:html,
+  last={V:V,r:r,N:N,pm:pm,R:R,rows:html,
     ov:[["Số tiền khách trả tháng đầu tiên",f(pay1)+D],["Số tiền khách trả tháng "+(pm+1)+" (đầu kỳ lãi thả nổi)",pm<N?f(payPost)+D:"–"],["Tổng lãi phát sinh toàn kỳ vay",f(tI)+D],["Tổng lãi chủ đầu tư hỗ trợ toàn kỳ",f(tS)+D],["Tổng lãi khách trả toàn kỳ",f(tK)+D]]};
   return true;
 }
@@ -225,19 +214,17 @@ function exportPdf(){
     ["Thời gian vay",L.N+" tháng"],
     ["Thời gian tham gia ưu đãi",opt("p")],
     ["Lãi suất cơ sở",pc(+$("b").value)+"/năm (sau ưu đãi: +3,69%/năm). Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ."],
-    ["Thời gian dự kiến thanh lý trước hạn","Tháng "+L.Y],
     ["Ân hạn gốc",($("g").value||0)+" tháng"],
     ["Thời gian CĐT hỗ trợ lãi suất",($("h").value||0)+" tháng (tối đa 11%/năm)"],
     ["Phương thức trả nợ",opt("m")]];
-  var tr=L.tot.map(function(x,i){return'<tr'+(i==0?' class="tot"':'')+"><td>"+esc(x[0])+"</td><td>"+esc(x[1])+"</td></tr>"}).join("");
   var h='<div class="pdfhead"><img src="'+document.querySelector(".logo").src+'" alt="SeABank"><div class="pt"><h1>Tóm tắt tính toán khoản vay</h1><p class="meta">Căn hộ Ecolife Riverside · SeABank Bình Định<br>Gói lãi suất hiệu lực từ 30/03/2026 · Ngày lập: '+new Date().toLocaleDateString("vi-VN")+'</p></div></div>'
    +'<h3>I. Thông tin khoản vay</h3>'+kv(inp)
-   +'<h3>II. Tính toán số tiền trả nợ trước hạn</h3>'+kv(L.R,tr)
+   +'<h3>II. Tính toán số tiền trả nợ trước hạn</h3>'+kv(L.R)
    +'<p class="note">Phí trả nợ trước hạn tính trên số gốc trả trước: ≤ 36 tháng: 2,5%; trên 36 đến 60 tháng: 1,5%; trên 60 tháng: miễn phí.</p>'
    +'<h3>III. Tổng quan toàn kỳ vay</h3>'+kv(L.ov);
   if($("inc").checked){
     h+='<h3>IV. Bảng tính lãi và vốn hàng tháng</h3><table class="sch">'+document.querySelector("#s2 thead").outerHTML+"<tbody>"+L.rows+"</tbody></table>"
-     +'<p class="note">Dòng tô vàng là kỳ dự kiến thanh lý; đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả, tính trên lãi suất tối đa 11%/năm.</p>';
+     +'<p class="note">Đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả, tính trên lãi suất tối đa 11%/năm.</p>';
   }
   h+='<p class="note">Lưu ý: Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ. Kết quả chỉ mang tính tham khảo.</p>';
   var rp=document.createElement("div"),btn=$("pdf"),fn="Tom-tat-khoan-vay-Ecolife_"+(u===""?"Nhaptay":U[+u].c)+"_"+(function(d){var p=function(n){return(n<10?"0":"")+n};return p(d.getDate())+p(d.getMonth()+1)+p(d.getFullYear()%100)})(new Date())+".pdf",handle=null;
