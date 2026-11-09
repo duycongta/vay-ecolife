@@ -38,7 +38,7 @@ table{border-collapse:collapse;width:100%}
 th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
 th:first-child,td:first-child{text-align:left}
 .res td{white-space:normal;vertical-align:top}
-.res td:last-child{text-align:right;font-weight:500;min-width:30%}
+.res td:last-child{text-align:right;font-weight:500;white-space:nowrap;overflow-wrap:normal}
 .res tr.tot td{font-weight:700;background:var(--accbg);color:var(--acc);font-size:16px}
 .wrap{overflow:auto;max-height:70vh;max-height:70svh;border:1px solid var(--line);border-radius:6px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .wrap th{position:sticky;top:0;background:var(--hd);color:var(--hdt);font-weight:500;font-size:13px;z-index:2}
@@ -72,7 +72,6 @@ main{position:relative;z-index:1}
  .wrap th,.wrap td{padding:6px 8px;font-size:12px}
  .wrap{max-height:60vh;max-height:60svh}
  .res td{padding:8px 4px;font-size:14px}
- .res td:last-child{min-width:38%}
 }
 @media (max-width:480px){
  button{flex:1 1 100%}
@@ -121,7 +120,7 @@ main{position:relative;z-index:1}
 <div><label for="t">Thời gian vay (tháng)</label><input id="t" type="number" min="60" max="240" value="240"><div class="hint">Từ 60 đến 240 tháng</div></div>
 <div><label for="p">Thời gian tham gia ưu đãi</label>
 <select id="p"><option value="12">Cố định 12 tháng – 9,49%</option><option value="18">Cố định 18 tháng – 10,49%</option><option value="24">Cố định 24 tháng – 10,49%</option></select></div>
-<div><label for="b">Lãi suất cơ sở (%/năm)</label><input id="b" type="number" step="0.01" value="8.6"><div class="hint">Sau ưu đãi: lãi suất cơ sở + 3,69%/năm. Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ.</div></div>
+<div><label for="b">Lãi suất cơ sở (%/năm)</label><input id="b" type="number" step="0.01" value="9.9"><div class="hint">Sau ưu đãi: lãi suất cơ sở + 3,69%/năm. Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ.</div></div>
 <div><label for="g">Ân hạn gốc (tháng)</label><input id="g" type="number" min="0" max="36" value="0"><div class="hint">Tối đa 36 tháng hoặc theo HTLS của CĐT/NPP</div></div>
 <div><label for="h">Thời gian chủ đầu tư hỗ trợ lãi suất (tháng)</label><input id="h" type="number" min="0" value="15"><div class="hint">Tự điền theo tỷ lệ vay: 50–70% → 15 tháng; 30–49% → 24 tháng; dưới 30% → 36 tháng. Có thể giảm, không vượt mức tối đa. Lãi suất được hỗ trợ tối đa 11%/năm.</div></div>
 <div><label for="m">Phương thức trả nợ</label><select id="m"><option value="eq">Gốc đều, lãi theo dư nợ giảm dần</option><option value="an">Niên kim (tổng trả hàng tháng đều)</option></select></div>
@@ -131,8 +130,9 @@ main{position:relative;z-index:1}
 </section>
 
 <section class="card" id="s1" hidden>
-<h2>1. Tính toán số tiền trả nợ trước hạn</h2>
+<h2>1. Thông tin cơ bản của khoản vay</h2>
 <table class="res"><tbody id="res"></tbody></table>
+<div class="note">Ghi chú: <span id="nt"></span></div>
 <div class="note">Phí trả nợ trước hạn tính trên số gốc trả trước: ≤ 36 tháng: 2,5%; trên 36 đến 60 tháng: 1,5%; trên 60 tháng: miễn phí.</div>
 </section>
 
@@ -144,15 +144,17 @@ main{position:relative;z-index:1}
 </section>
 </main>
 <div id="inapp" class="warn" hidden>Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên có thể không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
-<p class="note" style="text-align:center">Phiên bản v5 · 09/11/2026</p>
+<p class="note" style="text-align:center">Phiên bản v6 · 09/11/2026</p>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 var PROMO={12:9.49,18:10.49,24:10.49},CAP=11;
 var $=function(i){return document.getElementById(i)};
 var f=function(n){n=Math.round(n);return(n===0?0:n).toLocaleString("vi-VN")};
+var NOTE="LS cơ sở hiện chỉ mang tính tham khảo, vui lòng liên hệ ngân hàng để biết lãi suất từng thời kỳ.";
 var D="\u00a0đ",last=null;
 var pc=function(n){return n.toLocaleString("vi-VN",{maximumFractionDigits:2})+"%"};
 $("v").addEventListener("input",function(e){var d=e.target.value.replace(/\D/g,"");e.target.value=d?Number(d).toLocaleString("vi-VN"):""});
+document.getElementById("nt").textContent=NOTE;
 function calc(){
   var w=$("w"),msg=[];
   var V=Number($("v").value.replace(/\D/g,"")),r=+$("r").value,N=Math.round(+$("t").value),
@@ -180,7 +182,7 @@ function calc(){
   }
   $("tb").innerHTML=html;
   var tI=cumI,tS=cumS,tK=cumK;
-  var R=[["Giá trị căn hộ",f(V)+D],["Số tiền vay ("+r+"%)",f(P0)+D],["Vốn tự có",f(V-P0)+D]];
+  var R=[["Giá trị căn hộ",f(V)+D],["Số tiền vay ("+r+"%)",f(P0)+D],["Vốn tự có",f(V-P0)+D],["Lãi suất trong thời gian ưu đãi ("+pm+" tháng đầu)",pc(pr)+"/năm"],["Lãi suất sau ưu đãi (dự kiến)",pc(fl)+"/năm"]];
   var h=R.map(function(x){return"<tr><td>"+x[0]+"</td><td>"+x[1]+"</td></tr>"}).join("");
   $("res").innerHTML=h;
   $("s1").hidden=$("s2").hidden=false;
@@ -219,7 +221,7 @@ function exportPdf(){
     ["Phương thức trả nợ",opt("m")]];
   var h='<div class="pdfhead"><img src="'+document.querySelector(".logo").src+'" alt="SeABank"><div class="pt"><h1>Tóm tắt tính toán khoản vay</h1><p class="meta">Căn hộ Ecolife Riverside · SeABank Bình Định<br>Gói lãi suất hiệu lực từ 30/03/2026 · Ngày lập: '+new Date().toLocaleDateString("vi-VN")+'</p></div></div>'
    +'<h3>I. Thông tin khoản vay</h3>'+kv(inp)
-   +'<h3>II. Tính toán số tiền trả nợ trước hạn</h3>'+kv(L.R)
+   +'<h3>II. Thông tin cơ bản của khoản vay</h3>'+kv(L.R)+'<p class="note">'+NOTE+'</p>'
    +'<p class="note">Phí trả nợ trước hạn tính trên số gốc trả trước: ≤ 36 tháng: 2,5%; trên 36 đến 60 tháng: 1,5%; trên 60 tháng: miễn phí.</p>'
    +'<h3>III. Tổng quan toàn kỳ vay</h3>'+kv(L.ov);
   if($("inc").checked){
