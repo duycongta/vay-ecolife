@@ -114,7 +114,7 @@ main{position:relative;z-index:1}
 <section class="card">
 <h2>Thông tin khoản vay</h2>
 <div class="grid">
-<div><label for="u">Mã căn hộ</label><select id="u"></select><div class="hint" id="info"></div></div>
+<div><label for="us">Mã căn hộ</label><input id="us" type="search" inputmode="search" autocomplete="off" placeholder="Gõ để tìm, ví dụ: 1102 hoặc CT2-12B" style="margin-bottom:8px"><select id="u" aria-label="Danh sách mã căn hộ"></select><div class="hint" id="uh"></div><div class="hint" id="info"></div></div>
 <div><label for="dc">Chiết khấu 2% đặt cọc sớm</label><select id="dc"><option value="1">Có (giá sau chiết khấu 2%)</option><option value="0">Không (giá niêm yết)</option></select><div class="hint">Chiết khấu 5% chỉ áp dụng khi thanh toán sớm 95%, không tính cho vay vốn.</div></div>
 <div><label for="v">Giá trị căn hộ (VNĐ)</label><input id="v" inputmode="numeric" value="2.069.696.434"><div class="hint">Tự điền theo mã căn, chọn "Nhập tay" để tự nhập</div></div>
 <div><label for="r">Tỷ lệ muốn vay (%)</label><input id="r" type="number" step="1" min="1" max="70" value="70"><div class="hint">Tối đa 70% giá trị TSĐB</div></div>
@@ -144,7 +144,7 @@ main{position:relative;z-index:1}
 </section>
 </main>
 <div id="inapp" class="warn" hidden>Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên có thể không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
-<p class="note" style="text-align:center">Phiên bản v4 · 09/11/2026</p>
+<p class="note" style="text-align:center">Phiên bản v5 · 09/11/2026</p>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 var PROMO={12:9.49,18:10.49,24:10.49},CAP=11;
@@ -276,6 +276,16 @@ function fill(){
   else{$("info").textContent=""}
   calc();
 }
+function norm(t){return String(t).toUpperCase().replace(/[^A-Z0-9]/g,"")}
+$("us").addEventListener("input",function(){
+  var q=norm(this.value),cur=$("u").value,h='<option value="">Nhập tay</option>',n=0;
+  U.forEach(function(x,i){if(!q||norm(x.c).indexOf(q)>-1){h+='<option value="'+i+'">'+x.c+'</option>';n++}});
+  if(q&&!n){$("uh").textContent="Không tìm thấy căn hộ phù hợp.";return}
+  $("u").innerHTML=h;
+  if(q){$("uh").textContent="Tìm thấy "+n+" căn."+(n>1?" Chọn căn trong danh sách bên dưới.":"");$("u").selectedIndex=1;fill()}
+  else{$("uh").textContent="";$("u").value=cur}
+});
+$("us").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();this.blur()}});
 $("u").addEventListener("change",fill);$("dc").addEventListener("change",fill);
 $("go").addEventListener("click",calc);$("pdf").addEventListener("click",exportPdf);
 fill();
