@@ -119,7 +119,7 @@ main{position:relative;z-index:1}
 <div><label for="r">Tỷ lệ muốn vay (%)</label><input id="r" type="number" step="1" min="1" max="70" value="70"><div class="hint">Tối đa 70% giá trị TSĐB</div></div>
 <div><label for="t">Thời gian vay (tháng)</label><input id="t" type="number" min="60" max="240" value="240"><div class="hint">Từ 60 đến 240 tháng</div></div>
 <div><label for="p">Thời gian tham gia ưu đãi</label>
-<select id="p"><option value="12">Cố định 12 tháng – 9,49%</option><option value="18">Cố định 18 tháng – 10,49%</option><option value="24" selected>Cố định 24 tháng – 10,49%</option></select></div>
+<select id="p"><option value="12">Cố định 12 tháng – 9,49%</option><option value="18">Cố định 18 tháng – 10,49%</option><option value="24">Cố định 24 tháng – 10,49%</option></select></div>
 <div><label for="b">Lãi suất cơ sở (%/năm)</label><input id="b" type="number" step="0.01" value="9.9"><div class="hint">Sau ưu đãi: lãi suất cơ sở + 3,69%/năm. Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ.</div></div>
 <div><label for="g">Ân hạn gốc (tháng)</label><input id="g" type="number" min="0" max="36" value="0"><div class="hint">Tối đa 36 tháng hoặc theo HTLS của CĐT/NPP</div></div>
 <div><label for="h">Thời gian chủ đầu tư hỗ trợ lãi suất (tháng)</label><input id="h" type="number" min="0" value="15"><div class="hint">Tự điền theo tỷ lệ vay: 50–70% → 15 tháng; 30–49% → 24 tháng; dưới 30% → 36 tháng. Có thể giảm, không vượt mức tối đa. Lãi suất được hỗ trợ tối đa 11%/năm.</div></div>
@@ -144,7 +144,7 @@ main{position:relative;z-index:1}
 </section>
 </main>
 <div id="inapp" class="warn" hidden>Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên có thể không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
-<p class="note" style="text-align:center">Phiên bản v9 · 09/11/2026</p>
+<p class="note" style="text-align:center">Phiên bản v10 · 09/11/2026</p>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 var PROMO={12:9.49,18:10.49,24:10.49},CAP=11;
