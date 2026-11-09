@@ -144,7 +144,7 @@ main{position:relative;z-index:1}
 </section>
 </main>
 <div id="inapp" class="warn" hidden>Bạn đang mở trang trong ứng dụng (Zalo/Facebook…) nên có thể không tải được file PDF. Bấm dấu ⋯ ở góc trên → <b>Mở bằng trình duyệt</b>, hoặc <button type="button" id="cp" class="alt" style="min-height:0;padding:4px 10px;flex:none;font-size:13px">Sao chép link</button> rồi dán vào Chrome/Safari.</div>
-<p class="note" style="text-align:center">Phiên bản v6 · 09/11/2026</p>
+<p class="note" style="text-align:center">Phiên bản v7 · 09/11/2026</p>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 var PROMO={12:9.49,18:10.49,24:10.49},CAP=11;
@@ -219,16 +219,18 @@ function exportPdf(){
     ["Ân hạn gốc",($("g").value||0)+" tháng"],
     ["Thời gian CĐT hỗ trợ lãi suất",($("h").value||0)+" tháng (tối đa 11%/năm)"],
     ["Phương thức trả nợ",opt("m")]];
-  var h='<div class="pdfhead"><img src="'+document.querySelector(".logo").src+'" alt="SeABank"><div class="pt"><h1>Tóm tắt tính toán khoản vay</h1><p class="meta">Căn hộ Ecolife Riverside · SeABank Bình Định<br>Gói lãi suất hiệu lực từ 30/03/2026 · Ngày lập: '+new Date().toLocaleDateString("vi-VN")+'</p></div></div>'
-   +'<h3>I. Thông tin khoản vay</h3>'+kv(inp)
-   +'<h3>II. Thông tin cơ bản của khoản vay</h3>'+kv(L.R)+'<p class="note">'+NOTE+'</p>'
-   +'<p class="note">Phí trả nợ trước hạn tính trên số gốc trả trước: ≤ 36 tháng: 2,5%; trên 36 đến 60 tháng: 1,5%; trên 60 tháng: miễn phí.</p>'
-   +'<h3>III. Tổng quan toàn kỳ vay</h3>'+kv(L.ov);
+  var tx=function(sel){var e=document.querySelector(sel);return e?e.textContent.trim():""},
+      nts=document.querySelectorAll("#s1 .note");
+  var h='<div class="pdfhead"><img src="'+document.querySelector(".logo").src+'" alt="SeABank"><div class="pt"><h1>Tóm tắt tính toán khoản vay</h1><p class="meta"><b>'+esc(tx(".brand-info b"))+'</b> · 04-06-08 Ỷ Lan - P. Quy Nhơn<br>Hotline: 1900 555 587<br>Căn hộ Ecolife Riverside · Ngày lập: '+new Date().toLocaleDateString("vi-VN")+'</p></div></div>'
+   +'<p class="note">'+esc(tx("main .sub"))+'</p>'
+   +'<h3>Thông tin khoản vay</h3>'+kv(inp)
+   +($("w").style.display==="block"?'<p class="note"><b>'+esc($("w").textContent)+'</b></p>':'')
+   +'<h3>1. '+esc(tx("#s1 h2").replace(/^1\.\s*/,""))+'</h3>'+kv(L.R)
+   +Array.prototype.map.call(nts,function(n){return'<p class="note">'+esc(n.textContent.trim())+'</p>'}).join("");
   if($("inc").checked){
-    h+='<h3>IV. Bảng tính lãi và vốn hàng tháng</h3><table class="sch">'+document.querySelector("#s2 thead").outerHTML+"<tbody>"+L.rows+"</tbody></table>"
-     +'<p class="note">Đường kẻ đỏ đánh dấu kỳ đầu tiên áp dụng lãi suất thả nổi. Lãi phát sinh = dư nợ đầu kỳ × lãi suất năm ÷ 12. Lãi được hỗ trợ do chủ đầu tư chi trả, tính trên lãi suất tối đa 11%/năm.</p>';
+    h+='<h3>2. '+esc(tx("#s2 h2").replace(/^2\.\s*/,""))+'</h3><table class="sch">'+document.querySelector("#s2 thead").outerHTML+"<tbody>"+L.rows+"</tbody></table>"
+     +'<p class="note">'+esc(tx("#s2 .note"))+'</p>';
   }
-  h+='<p class="note">Lưu ý: Liên hệ ngân hàng để cập nhật LS cơ sở từng thời kỳ. Kết quả chỉ mang tính tham khảo.</p>';
   var rp=document.createElement("div"),btn=$("pdf"),fn="Tom-tat-khoan-vay-Ecolife_"+(u===""?"Nhaptay":U[+u].c)+"_"+(function(d){var p=function(n){return(n<10?"0":"")+n};return p(d.getDate())+p(d.getMonth()+1)+p(d.getFullYear()%100)})(new Date())+".pdf",handle=null;
   if(typeof html2pdf==="undefined"){toast("Chưa tải được thư viện tạo PDF. Hãy kiểm tra kết nối mạng rồi thử lại."+(INAPP?" "+HELP:""),9000);return}
   var go=function(){
